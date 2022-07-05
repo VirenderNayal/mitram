@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "378470290983",
+    "project_id": "mitram-16d85",
+    "storage_bucket": "mitram-16d85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378470290983:android:c381aa4b54407dd335e002",
+        "android_client_info": {
+          "package_name": "com.atulyabharat.mitram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378470290983-qe8j0rj5r2vii36ik9k1cn5r6rotb92e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMme_yiw0pkQsvYNx4c5ub5T6PNO5lx-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378470290983-qe8j0rj5r2vii36ik9k1cn5r6rotb92e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
