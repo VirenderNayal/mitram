@@ -1,5 +1,10 @@
+import 'dart:typed_data';
+
 import "package:flutter/material.dart";
+import 'package:image_picker/image_picker.dart';
+import 'package:mitram/resources/auth_method.dart';
 import 'package:mitram/utils/colors.dart';
+import 'package:mitram/utils/utils.dart';
 import 'package:mitram/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -14,6 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -22,6 +28,13 @@ class _SignupScreenState extends State<SignupScreen> {
     _fullNameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List imageFromDevice = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = imageFromDevice;
+    });
   }
 
   @override
@@ -37,8 +50,36 @@ class _SignupScreenState extends State<SignupScreen> {
               // Logo
               Image.asset(
                 'assets/mitram_logo.png',
+                height: 200,
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 40),
+
+              // User Avatar
+              Stack(
+                children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"),
+                        ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add_a_photo,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
 
               // Field for Email
               TextFieldInput(
@@ -75,6 +116,17 @@ class _SignupScreenState extends State<SignupScreen> {
 
               // Signup Button
               InkWell(
+                onTap: () async {
+                  String res = await AuthMethods().signUpUser(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    username: _usernameController.text,
+                    fullName: _fullNameController.text,
+                    file: _image!,
+                  );
+
+                  print(res);
+                },
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
