@@ -1,6 +1,13 @@
 import "package:flutter/material.dart";
+import 'package:mitram/resources/auth_method.dart';
+import 'package:mitram/screens/signup_screen.dart';
 import 'package:mitram/utils/colors.dart';
+import 'package:mitram/utils/utils.dart';
 import 'package:mitram/widgets/text_field_input.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,6 +19,33 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().logInUser(
+        email: _usernameController.text, password: _passwordController.text);
+
+    if (res != 'success') {
+      showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void dispose() {
@@ -71,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Login Button
               InkWell(
+                onTap: login,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -81,7 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     color: blueColor,
                   ),
-                  child: const Text("Log In"),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                          color: primaryColor,
+                          strokeWidth: 2,
+                        )
+                      : const Text("Log In"),
                 ),
               ),
               const SizedBox(height: 20),
@@ -98,7 +138,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SignupScreen()));
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
@@ -111,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
