@@ -10,6 +10,15 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+
+    return model.User.fromSnap(documentSnapshot);
+  }
+
   // function to sign up user
   Future<String> signUpUser({
     required String email,
@@ -17,18 +26,21 @@ class AuthMethods {
     required String username,
     required String fullName,
     String bio = "",
-    required Uint8List file,
+    required Uint8List? file,
   }) async {
     String res = "error by user [empty fields]";
+    String profilePicUrl = "";
 
     try {
-      if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty && username.isNotEmpty) {
         // register user
         UserCredential userCredential = await _auth
             .createUserWithEmailAndPassword(email: email, password: password);
 
-        String profilePicUrl = await StorageMethods()
-            .uploadImageToStorage('profilePics', file, false);
+        if (file != null) {
+          profilePicUrl = await StorageMethods()
+              .uploadImageToStorage('profilePics', file, false);
+        }
 
         // Add user details to firestore
         model.User user = model.User(
@@ -63,7 +75,7 @@ class AuthMethods {
     String res = "error";
 
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         res = 'success';
