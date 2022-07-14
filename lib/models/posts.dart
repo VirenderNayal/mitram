@@ -7,6 +7,7 @@ class Post {
   final String username;
   final String postId;
   final String description;
+  final String profilePicUrl;
   final datePublished;
   final String postPhotoUrl;
   final likes;
@@ -16,6 +17,7 @@ class Post {
     required this.username,
     required this.postId,
     required this.description,
+    required this.profilePicUrl,
     required this.datePublished,
     required this.postPhotoUrl,
     required this.likes,
@@ -28,6 +30,7 @@ class Post {
       "postId": postId,
       "description": description,
       "datePublished": datePublished,
+      "profilePicUrl": profilePicUrl,
       "postPhotoUrl": postPhotoUrl,
       "likes": likes,
     };
@@ -41,6 +44,7 @@ class Post {
       username: snapshot['username'],
       postId: snapshot['postId'],
       description: snapshot['description'],
+      profilePicUrl: snapshot['profilePicUrl'],
       datePublished: snapshot['datePublished'],
       postPhotoUrl: snapshot['postPhotoUrl'],
       likes: snapshot['likes'],

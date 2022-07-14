@@ -9,8 +9,8 @@ class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // upload post function
-  Future<String> uploadPost(
-      Uint8List file, String description, String uid, String username) async {
+  Future<String> uploadPost(Uint8List file, String description, String uid,
+      String username, String profilePicUrl) async {
     String res = "ERROR";
 
     try {
@@ -24,6 +24,7 @@ class FirestoreMethods {
         username: username,
         postId: postId,
         description: description,
+        profilePicUrl: profilePicUrl,
         datePublished: DateTime.now(),
         postPhotoUrl: postPhotoUrl,
         likes: [],

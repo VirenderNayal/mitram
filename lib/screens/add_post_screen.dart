@@ -21,7 +21,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
 
-  void postImage(String uid, String username) async {
+  void postImage(String uid, String username, String profilePicUrl) async {
     setState(() {
       _isLoading = true;
     });
@@ -31,6 +31,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _descriptionController.text,
         uid,
         username,
+        profilePicUrl,
       );
 
       if (res == 'success') {
@@ -129,15 +130,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
               actions: [
                 TextButton(
-                    onPressed: () => postImage(user.uid, user.username),
-                    child: const Text(
-                      "Post",
-                      style: TextStyle(
-                        color: blueColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ))
+                  onPressed: () =>
+                      postImage(user.uid, user.username, user.profilePicUrl),
+                  child: const Text(
+                    "Post",
+                    style: TextStyle(
+                      color: blueColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
             body: Padding(
